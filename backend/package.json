@@ -9,7 +9,7 @@
     "start": "node dist/server.js",
     "test": "jest --coverage",
     "test:watch": "jest --watch",
-    "migrate": "node dist/migrations/run.js",
+    "migrate": "npx ts-node src/migrations/run.ts",
     "test:db": "node test-db-connection.js"
   },
   "dependencies": {

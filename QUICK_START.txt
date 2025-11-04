@@ -1,0 +1,147 @@
+SlotSwapper - Quick Start Guide
+================================
+
+FASTEST WAY TO RUN (Docker)
+===========================
+
+1. Make sure Docker is installed and running
+
+2. Run this single command:
+   $ docker-compose up --build
+
+3. Open your browser:
+   Frontend: http://localhost:3000
+   Backend: http://localhost:3001
+
+That's it! 🎉
+
+The application will:
+- Start PostgreSQL database
+- Run database migrations automatically
+- Start the backend server
+- Start the frontend server
+- Everything will be ready to use!
+
+FIRST TIME USING THE APP
+=========================
+
+1. Go to http://localhost:3000
+
+2. Click "Sign up" and create an account
+   - Enter your name, email, and password (min 6 characters)
+
+3. You'll be automatically logged in and redirected to the Dashboard
+
+4. Create your first event:
+   - Click "Create Event" button
+   - Fill in the event details
+   - Choose status (BUSY or SWAPPABLE)
+   - Click "Create"
+
+5. Make an event swappable:
+   - Find a BUSY event
+   - Click "Make Swappable"
+
+6. To test swapping (open in incognito/another browser):
+   - Create a second user account
+   - Create and mark an event as SWAPPABLE
+   - Go to "Marketplace" tab
+   - You'll see the first user's swappable slot
+   - Click "Request Swap"
+   - Select one of your swappable slots
+   - Click "Send Request"
+
+7. Accept the swap (as the first user):
+   - Go to "Requests" tab
+   - See the incoming request
+   - Click "Accept" to swap the events
+   - Both users' calendars will update instantly!
+
+COMMON ISSUES
+=============
+
+Port 3000 or 3001 already in use?
+- Stop the process using that port, or
+- Change ports in docker-compose.yml
+
+Database connection failed?
+- Wait a few seconds for PostgreSQL to start
+- Check Docker logs: docker-compose logs db
+
+Can't see swappable slots in Marketplace?
+- You need at least 2 users
+- Each user needs swappable events
+- You can't see your own slots
+
+Real-time notifications not working?
+- Check browser console for WebSocket errors
+- Make sure backend is running on port 3001
+- Check that you're logged in
+
+STOP THE APPLICATION
+====================
+
+Press Ctrl+C in the terminal, then:
+$ docker-compose down
+
+To remove all data (database):
+$ docker-compose down -v
+
+MANUAL SETUP (without Docker)
+==============================
+
+See SETUP.txt for detailed manual installation instructions.
+
+TESTING
+=======
+
+Run backend tests:
+$ cd backend
+$ npm test
+
+DEPLOYMENT
+==========
+
+See SETUP.txt for deployment instructions to:
+- Render/Heroku (backend)
+- Vercel/Netlify (frontend)
+
+HELP & DOCUMENTATION
+====================
+
+- Full setup guide: SETUP.txt
+- API documentation: API_DOCUMENTATION.txt
+- Feature list: FEATURES.txt
+- Postman collection: SlotSwapper.postman_collection.json
+
+DEMO WORKFLOW
+=============
+
+User A:
+1. Sign up as alice@example.com
+2. Create "Team Meeting" on Nov 10, 10-11am
+3. Mark it as SWAPPABLE
+4. Wait for swap requests
+
+User B:
+1. Sign up as bob@example.com
+2. Create "Focus Block" on Nov 11, 2-3pm
+3. Mark it as SWAPPABLE
+4. Go to Marketplace
+5. See Alice's "Team Meeting"
+6. Request swap with your "Focus Block"
+
+User A:
+1. Receive real-time notification 🔔
+2. Go to Requests tab
+3. See Bob's swap request
+4. Click Accept
+5. Calendar updates - now has "Focus Block" on Nov 11
+
+User B:
+1. Receive acceptance notification 🎉
+2. Calendar updates - now has "Team Meeting" on Nov 10
+
+Both events now belong to the other user!
+
+ENJOY SLOTSWAPPER! 🎊

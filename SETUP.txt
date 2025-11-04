@@ -1,6 +1,9 @@
 SlotSwapper - Peer-to-Peer Time Slot Scheduler
 ==============================================
 
+⭐ QUICK START: See SUPABASE_SETUP.md for the easiest setup method!
+⭐ Using Supabase means no local database setup required on Windows/Mac/Linux
+
 PROJECT OVERVIEW
 ----------------
 SlotSwapper is a full-stack application that allows users to exchange time slots with each other.

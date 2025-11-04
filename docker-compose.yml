@@ -1,6 +1,8 @@
 version: '3.8'
 
 services:
+  # Optional: Local PostgreSQL database (only needed if not using Supabase)
+  # To use: docker-compose up db
   db:
     image: postgres:15-alpine
     container_name: slotswapper-db
@@ -17,24 +19,18 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+    profiles:
+      - local-db  # Only starts when explicitly requested
 
   backend:
     build:
       context: ./backend
       dockerfile: Dockerfile
     container_name: slotswapper-backend
-    environment:
-      PORT: 3001
-      NODE_ENV: production
-      DATABASE_URL: postgresql://slotswapper:slotswapper123@db:5432/slotswapper
-      JWT_SECRET: your-super-secret-jwt-key-change-in-production-please
-      JWT_EXPIRES_IN: 7d
-      CORS_ORIGIN: http://localhost:3000
+    env_file:
+      - ./backend/.env
     ports:
       - "3001:3001"
-    depends_on:
-      db:
-        condition: service_healthy
     volumes:
       - ./backend:/app
       - /app/node_modules

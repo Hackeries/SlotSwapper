@@ -11,7 +11,6 @@ dns.setDefaultResultOrder('ipv4first');
 if (!process.env.DATABASE_URL) {
   console.error('❌ ERROR: DATABASE_URL environment variable is not set!');
   console.error('Please create a .env file in the backend directory with your database credentials.');
-  console.error('See SUPABASE_SETUP.md for instructions.');
   process.exit(1);
 }
 
@@ -57,15 +56,12 @@ export async function testDatabaseConnection(retries = 3): Promise<boolean> {
         console.error('   - Check your internet connection');
       } else if (error.code === 'ENETUNREACH' && error.message.includes('2406:') || error.message.includes('::')) {
         console.error('\n🔍 IPv6 Network Unreachable - Your Supabase database only supports IPv6!');
-        console.error('\n💡 SOLUTION - Use Supabase Connection Pooler (IPv4 Supported):');
+        console.error('\n💡 SOLUTION - Use Supabase Connection Pooler:');
         console.error('   1. Go to https://supabase.com/dashboard');
-        console.error('   2. Select your project');
-        console.error('   3. Go to Project Settings → Database');
-        console.error('   4. Find "Connection Pooling" section');
-        console.error('   5. Copy the "Transaction" or "Session" mode connection string');
-        console.error('   6. Replace your DATABASE_URL in .env with the pooler URL');
-        console.error('   7. The pooler URL looks like: postgresql://postgres.[PROJECT-REF]:[PASSWORD]@aws-0-[REGION].pooler.supabase.com:6543/postgres');
-        console.error('\n   Alternative: Create a new Supabase project in a region with IPv4 support');
+        console.error('   2. Project Settings → Database → Connection Pooling');
+        console.error('   3. Copy the Transaction mode connection string (port 6543)');
+        console.error('   4. Update DATABASE_URL in .env with the pooler URL');
+        console.error('   5. Format: postgresql://postgres.[ref]:[pass]@aws-0-[region].pooler.supabase.com:6543/postgres');
       } else if (error.code === 'ECONNREFUSED') {
         console.error('\n🔍 Connection Refused - Possible causes:');
         console.error('   1. Database server is not running');

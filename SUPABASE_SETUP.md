@@ -30,15 +30,43 @@ This guide will help you set up Supabase as your database for the SlotSwapper pr
 
 ## Step 3: Get Your Database Connection String
 
+⚠️ **IMPORTANT**: Use the **Connection Pooler** for better compatibility and performance!
+
+### Option A: Connection Pooler (RECOMMENDED ✅)
+
+The connection pooler supports both IPv4 and IPv6, works on all networks, and provides better performance.
+
 1. In your Supabase project dashboard, click **"Project Settings"** (gear icon in the left sidebar)
 2. Go to **"Database"** section
-3. Scroll down to **"Connection string"**
+3. Scroll down to **"Connection Pooling"** section
+4. Copy the **Transaction mode** connection string (Port 6543):
+   ```
+   postgresql://postgres.[PROJECT-REF]:[YOUR-PASSWORD]@aws-0-[REGION].pooler.supabase.com:6543/postgres
+   ```
+5. **IMPORTANT**: Replace `[YOUR-PASSWORD]` with the actual password you created in Step 2
+
+**Why use the pooler?**
+- ✅ Works on Windows, Mac, Linux, and all hosting platforms
+- ✅ Supports both IPv4 and IPv6 networks
+- ✅ Better performance through connection pooling
+- ✅ Handles more concurrent connections
+- ✅ Automatic failover and resilience
+
+### Option B: Direct Connection (May have IPv6 issues ⚠️)
+
+Only use this if you're sure your network supports IPv6 or if Option A doesn't work.
+
+1. In your Supabase project dashboard, click **"Project Settings"** (gear icon in the left sidebar)
+2. Go to **"Database"** section
+3. Scroll down to **"Connection string"** section
 4. Select **"URI"** tab
-5. Copy the connection string - it looks like:
+5. Copy the connection string:
    ```
    postgresql://postgres:[YOUR-PASSWORD]@db.xxxxxxxxxxxxx.supabase.co:5432/postgres
    ```
 6. **IMPORTANT**: Replace `[YOUR-PASSWORD]` with the actual password you created in Step 2
+
+**Note**: If you get an "IPv6 Network Unreachable" error, switch to Option A (Connection Pooler).
 
 ## Step 4: Configure Your Project
 
@@ -126,10 +154,18 @@ Server running on port 3001
 
 ## Troubleshooting
 
+### Error: "IPv6 Network Unreachable" or "ENETUNREACH"
+**This is the most common issue!** Your Supabase database only supports IPv6, but your network doesn't.
+
+**SOLUTION**: Use the Connection Pooler (Option A in Step 3 above)
+- The pooler supports both IPv4 and IPv6
+- See `backend/IPV6_FIX.md` for detailed instructions
+
 ### Error: "password authentication failed"
 - Make sure you replaced `[YOUR-PASSWORD]` with your actual password
 - The password should NOT have brackets around it
 - Make sure there are no extra spaces in the connection string
+- Special characters need URL encoding (@→%40, #→%23, !→%21)
 
 ### Error: "SSL connection required"
 - This is already handled in the code! The database config has SSL enabled.
@@ -138,7 +174,14 @@ Server running on port 3001
 ### Error: "too many connections"
 - Free tier has connection limits
 - Make sure you're not running multiple instances of the backend
+- **Solution**: Use the Connection Pooler (Option A in Step 3)
 - Restart your backend server
+
+### Error: "ENOTFOUND" or "getaddrinfo ENOTFOUND"
+- Your Supabase project may be paused (free tier pauses after inactivity)
+- Go to https://supabase.com/dashboard and check if your project is active
+- Click "Restore" if it's paused
+- Or the hostname in DATABASE_URL is incorrect
 
 ### Need to Reset Database?
 1. Go to Supabase Dashboard -> Database -> Tables
